@@ -1,0 +1,23 @@
+services:
+  mongodb-vizucar:
+    image: mongodb-vizucar
+    container_name: mongodb-vizucar-container
+    ports:
+      - "27017:27017"
+    networks:
+      - vizucar-network
+  vizucar-api:
+    image: vizucar-api
+    container_name: vizucar-api-container
+    depends_on:
+      - mongodb-vizucar
+    ports:
+      - "80:80"
+    environment:
+      MONGO_URL: mongodb://mongodb-vizucar:27017
+    networks:
+      - vizucar-network
+
+networks:
+  vizucar-network:
+    driver: bridge
